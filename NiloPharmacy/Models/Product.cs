@@ -38,8 +38,8 @@ namespace NiloPharmacy.Models
         [Required(ErrorMessage = "Supplier Id is Required")]
         public int SupplierId { get; set; }
         //supplier
-        //[ForeignKey("SupplierId")]
-        //public Supplier supplier { get; set; }
+        [ForeignKey("SupplierId")]
+        public Supplier supplier { get; set; }
     }
 
     public class ExpiryDate : ValidationAttribute

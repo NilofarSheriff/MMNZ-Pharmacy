@@ -9,11 +9,14 @@ namespace NiloPharmacy.Controllers
     {
         private readonly IProductsService _service;
         private readonly ShoppingCart _shoppingCart;
+        private readonly IOrdersService _orderservice;
 
-        public OrdersController( IProductsService Service, ShoppingCart shoppingCart)
+
+        public OrdersController( IProductsService Service, ShoppingCart shoppingCart,IOrdersService ordersService)
         {
             _service = Service;
             _shoppingCart = shoppingCart;
+            _orderservice = ordersService;
         }
 
         public IActionResult ShoppingCart()
@@ -29,7 +32,24 @@ namespace NiloPharmacy.Controllers
 
             return View(response);
         }
+        public async Task<IActionResult> CompleteOrder()
+        {
+            var items = _shoppingCart.GetShoppingCartItems();
+            string userId = "";
+            string userEmailAddress = "";
 
+            await _orderservice.StoreOrderAsync(items, userId, userEmailAddress);
+            await _shoppingCart.ClearShoppingCartAsync();
+
+            return View("OrderCompleted");
+        }
+        public async Task<IActionResult> Index()
+        {
+            string userId = "";
+
+            var orders = await _orderservice.GetOrdersByUserIdAsync(userId);
+            return View(orders);
+        }
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
             var item = await _service.GetByIdAsync(id);
