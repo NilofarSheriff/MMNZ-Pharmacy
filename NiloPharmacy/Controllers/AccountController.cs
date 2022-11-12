@@ -42,7 +42,7 @@ namespace NiloPharmacy.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Movies");
+                        return RedirectToAction("Index", "Products");
                     }
                 }
                 TempData["Error"] = "Wrong credentials. Please, try again!";
@@ -85,7 +85,11 @@ namespace NiloPharmacy.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Movies");
+            return RedirectToAction("Index", "Products");
+        }
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            return View();
         }
     }
 }

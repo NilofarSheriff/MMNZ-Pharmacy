@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NiloPharmacy.Data;
+using Microsoft.AspNetCore.Authorization;
 using NiloPharmacy.Data.Services;
 using NiloPharmacy.Models;
+using NiloPharmacy.Data.Static;
 
 namespace NiloPharmacy.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class ProductsController : Controller
     {
         
@@ -17,7 +20,7 @@ namespace NiloPharmacy.Controllers
         {
             _service = Service;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             ViewData["Welcome"] = "Welcome to our XYZ Pharmacy";
@@ -50,6 +53,7 @@ namespace NiloPharmacy.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int Id)
         {
             var SupplierDetails = await _service.GetByIdAsync(Id);
@@ -87,15 +91,18 @@ namespace NiloPharmacy.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allProd = await _service.GetAllAsync();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                var filteredResult = allProd.Where(n => n.ProductName.Contains(searchString) || n.MedicineDesc.Contains(searchString) || n.MedicinalUse.ToString().Contains(searchString) || n.CategoryName.ToString().Contains(searchString)).ToList();
-                return View("Index", filteredResult);
+                
+                //var filteredResult = allProd.Where(n => n.ProductName.Contains(searchString) || n.MedicineDesc.Contains(searchString) || n.MedicinalUse.ToString().Contains(searchString) || n.CategoryName.ToString().Contains(searchString)).ToList();
+                var filteredResultNew = allProd.Where(n => string.Equals(n.ProductName, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.MedicineDesc, searchString,
+                    StringComparison.CurrentCultureIgnoreCase)||(string.Equals(n.CategoryName.ToString(), searchString, StringComparison.CurrentCultureIgnoreCase))).ToList();
+                return View("Index", filteredResultNew);
                 
             }
 

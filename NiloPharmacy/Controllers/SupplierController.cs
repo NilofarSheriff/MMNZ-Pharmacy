@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NiloPharmacy.Data;
+using Microsoft.AspNetCore.Authorization;
 using NiloPharmacy.Data.Services;
 using NiloPharmacy.Models;
+using NiloPharmacy.Data.Static;
 
 namespace NiloPharmacy.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class SupplierController : Controller
     {
 
@@ -15,7 +18,7 @@ namespace NiloPharmacy.Controllers
         {
             _service = Service;
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var data = await _service.GetAllAsync();
@@ -41,6 +44,7 @@ namespace NiloPharmacy.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int Id)
         {
             var SupplierDetails =  await _service.GetByIdAsync(Id);
