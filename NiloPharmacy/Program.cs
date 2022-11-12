@@ -2,7 +2,10 @@ using NiloPharmacy.Data;
 using Microsoft.EntityFrameworkCore;
 using NiloPharmacy.Data.Services;
 using NiloPharmacy.Data.Cart;
+using NiloPharmacy.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +17,15 @@ builder.Services.AddScoped<IProductsService, ProductsService>();
 builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+//Authentication and authorization
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddSession();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+});
 builder.Services.AddControllersWithViews();
 
 

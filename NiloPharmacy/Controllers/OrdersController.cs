@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NiloPharmacy.Data.Cart;
 using NiloPharmacy.Data.Services;
+using NiloPharmacy.Data.Static;
 using NiloPharmacy.Data.ViewModels;
+using NiloPharmacy.Models;
+using System.Security.Claims;
 
 namespace NiloPharmacy.Controllers
 {
@@ -35,8 +38,8 @@ namespace NiloPharmacy.Controllers
         public async Task<IActionResult> CompleteOrder()
         {
             var items = _shoppingCart.GetShoppingCartItems();
-            string userId = "";
-            string userEmailAddress = "";
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
             await _orderservice.StoreOrderAsync(items, userId, userEmailAddress);
             await _shoppingCart.ClearShoppingCartAsync();
@@ -45,11 +48,13 @@ namespace NiloPharmacy.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            string userId = "";
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
 
-            var orders = await _orderservice.GetOrdersByUserIdAsync(userId);
+            var orders = await _orderservice.GetOrdersByUserIdAndRoleAsync(userId, userRole);
             return View(orders);
         }
+    
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
             var item = await _service.GetByIdAsync(id);
