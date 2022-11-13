@@ -16,7 +16,6 @@
                 <tr>
                     <th>Selected amount</th>
                     <th>Product</th>
-                    <th>Quantity</th>
                     <th>Price</th>
                     <th>Subtotal</th>
 
@@ -59,9 +58,9 @@
 
         <div class="text-right">
             <div class="btn-group">
-               @* <a class="btn btn-outline-primary" asp-action="CompleteOrder">
-                    Complete order
-                </a>*@
+               <a class="btn btn-outline-primary" asp-action="CompleteOrder">
+                    Cash on Delivery
+                </a>
                 <div id="paypal-btn"></div>
                 <span style="padding:5px"></span>
                 <div id="container"></div>
@@ -108,7 +107,7 @@
             onAuthorize: function (data, actions) {
                 //console.log("payment executed");
                 return actions.payment.execute().then(function () {
-                    var url = '@Url.Action("CompleteOrder", "Orders", new { })';
+                    var url = '@Url.Action("~/Orders/CompleteOrder")';
                     window.location.href = url;
                 });
             }

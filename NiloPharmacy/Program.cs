@@ -5,12 +5,13 @@ using NiloPharmacy.Data.Cart;
 using NiloPharmacy.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using Microsoft.Identity.Client.Extensibility;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-;
+
 builder.Services.AddDbContext<AppDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("Con")));
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 builder.Services.AddScoped<IProductsService, ProductsService>();
@@ -52,6 +53,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Products}/{action=Index}/{id?}");
+
 
 AppDbInitializer.Seed(app);
 AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();

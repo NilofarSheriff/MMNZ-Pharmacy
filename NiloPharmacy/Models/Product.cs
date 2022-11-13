@@ -15,11 +15,12 @@ namespace NiloPharmacy.Models
         public string ProductName { get; set; }
         [Display(Name = "Category Name")]
         [Required(ErrorMessage = "Category Name is Required")]
-        
         public  Category CategoryName { get; set; }
+        [Display(Name = "Stock Quantity")]
+        [Required(ErrorMessage = "No. of stock Required")]
+        public int Stock { get; set; }
         [Display(Name = "Medicinal use")]
         [Required(ErrorMessage = "Medicinal Use is Required")]
-        
         public MedicinalUse MedicinalUse { get; set; }
         [Required(ErrorMessage = "Expiry Date is Required")]
         [ExpiryDate(ErrorMessage = "Hire Date must be less than or equal to Today's Date")]
@@ -34,12 +35,13 @@ namespace NiloPharmacy.Models
         [Display(Name = "Product Image Url")]
         [Required(ErrorMessage = "Product Image is Required")]
         public string ProductImage { get; set; }
+        public int Quantity { get; set; }
         [Display(Name = "Supplier Id")]
         [Required(ErrorMessage = "Supplier Id is Required")]
         public int SupplierId { get; set; }
         //supplier
-        [ForeignKey("SupplierId")]
-        public Supplier supplier { get; set; }
+        //[ForeignKey("SupplierId")]
+        //public Supplier supplier { get; set; }
     }
 
     public class ExpiryDate : ValidationAttribute

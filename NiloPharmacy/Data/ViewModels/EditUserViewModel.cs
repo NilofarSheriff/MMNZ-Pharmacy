@@ -1,12 +1,30 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
+using NiloPharmacy.Data.Static;
+using NiloPharmacy.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
-namespace NiloPharmacy.Models
+namespace NiloPharmacy.Data.ViewModels
 {
-    public class ApplicationUser: IdentityUser
+    public class EditUserViewModel
     {
+        public EditUserViewModel()
+        {
+            Claims = new List<string>();
+            Roles = new List<string>();
+            
+        }
+        public string Id { get; set; }
+
         [Display(Name = "Full name")]
+        [Required(ErrorMessage = "Full name is required")]
         public string FullName { get; set; }
+
+        [Display(Name = "Email address")]
+        [Required(ErrorMessage = "Email address is required")]
+        [EmailAddress]
+        public string EmailAddress { get; set; }
+
 
         [Required(ErrorMessage = "Please enter phone number")]
         [Display(Name = "Phone Number")]
@@ -22,11 +40,11 @@ namespace NiloPharmacy.Models
         [Required(ErrorMessage = "Gender is Required")]
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
-    }
-     public enum Gender
-    {
-        Female=1,
-        Male=2,
-        Others=3
+
+        public List<string> Claims { get; set; }
+
+        public IList<string> Roles { get; set; }
+
+        
     }
 }

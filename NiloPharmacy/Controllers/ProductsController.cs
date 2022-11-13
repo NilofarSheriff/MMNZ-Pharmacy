@@ -40,7 +40,7 @@ namespace NiloPharmacy.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductName","ProductImage","ProductPrice","CategoryName","SupplierId","MedicinalUse","ExpiryDate","MedicineDesc")] Product prod)
+        public async Task<IActionResult> Create([Bind("ProductName","ProductImage","ProductPrice","Stock","CategoryName","SupplierId","MedicinalUse","ExpiryDate","MedicineDesc")] Product prod)
         {
             if (!ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace NiloPharmacy.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int Id,[Bind("ProductName", "ProductImage", "ProductPrice", "CategoryName", "SupplierId", "MedicinalUse", "ExpiryDate", "MedicineDesc")] Product supplier)
+        public async Task<IActionResult> Edit(int Id,[Bind("ProductName", "Stock", "ProductImage", "ProductPrice", "CategoryName", "SupplierId", "MedicinalUse", "ExpiryDate", "MedicineDesc")] Product supplier)
         {
             if (!ModelState.IsValid)
             {
@@ -114,7 +114,7 @@ namespace NiloPharmacy.Controllers
             var supplier = await _service.GetByIdAsync(Id);
             if (supplier == null)
             {
-                return View("Not Found");
+                return View("NotFound");
             }
             return View(supplier);
         }
@@ -125,7 +125,7 @@ namespace NiloPharmacy.Controllers
             var supplier = await _service.GetByIdAsync(Id);
             if (supplier == null)
             {
-                return View("Not Found");
+                return View("NotFound");
             }
             await _service.DeleteAsync(Id);
 

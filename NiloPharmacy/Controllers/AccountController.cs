@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NiloPharmacy.Data;
@@ -45,7 +47,7 @@ namespace NiloPharmacy.Controllers
                         return RedirectToAction("Index", "Products");
                     }
                 }
-                TempData["Error"] = "Wrong credentials. Please, try again!";
+                TempData["Error"] = "Incorrect Password. Please, try again!";
                 return View(loginVM);
             }
 
@@ -71,7 +73,12 @@ namespace NiloPharmacy.Controllers
             {
                 FullName = registerVM.FullName,
                 Email = registerVM.EmailAddress,
-                UserName = registerVM.EmailAddress
+                UserName = registerVM.EmailAddress,
+                Contact = registerVM.Contact,
+                Age = registerVM.Age,
+                DateOfBirth = registerVM.DateOfBirth,
+                Gender = registerVM.Gender
+                
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
@@ -80,6 +87,73 @@ namespace NiloPharmacy.Controllers
 
             return View("RegisterCompleted");
         }
+
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.Message = $"User {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                var userclaims = await _userManager.GetClaimsAsync(user);
+                var userroles = await _userManager.GetRolesAsync(user);
+
+                var model = new EditUserViewModel()
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    EmailAddress = user.Email,
+                    Contact = user.Contact,
+                    Age = user.Age,
+                    DateOfBirth = user.DateOfBirth,
+                    Gender = user.Gender,
+                    Claims = userclaims.Select(c => c.Value).ToList(),
+                    Roles = userroles
+
+                };
+                return View(model);
+
+
+            }
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                ViewBag.Message = $"User {model.Id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                user.FullName = model.FullName;
+                user.Contact = model.Contact;
+                user.Age = model.Age;
+                user.DateOfBirth = model.DateOfBirth;
+                user.Email = model.EmailAddress;
+                user.Gender = model.Gender;
+                user.UserName = model.EmailAddress;
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Products");
+
+                }
+                foreach(var errors in result.Errors)
+                {
+                    ModelState.AddModelError("", errors.Description);
+                }
+                return View(model);
+                
+            }
+            
+        }
+      
 
         [HttpPost]
         public async Task<IActionResult> Logout()
@@ -91,5 +165,7 @@ namespace NiloPharmacy.Controllers
         {
             return View();
         }
+
+       
     }
 }

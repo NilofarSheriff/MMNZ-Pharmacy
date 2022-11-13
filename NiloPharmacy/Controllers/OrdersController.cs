@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Rotativa;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NiloPharmacy.Data.Cart;
 using NiloPharmacy.Data.Services;
@@ -6,6 +8,7 @@ using NiloPharmacy.Data.Static;
 using NiloPharmacy.Data.ViewModels;
 using NiloPharmacy.Models;
 using System.Security.Claims;
+using Rotativa.NetCore;
 
 namespace NiloPharmacy.Controllers
 {
@@ -78,5 +81,13 @@ namespace NiloPharmacy.Controllers
             }
             return RedirectToAction(nameof(ShoppingCart));
         }
+        
+            public ActionResult PrintAllReport()
+            {
+            var report = new ActionAsPdf("Index");
+            return report;
+        }
+        
+
     }
 }

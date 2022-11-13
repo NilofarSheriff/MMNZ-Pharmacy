@@ -98,14 +98,18 @@ namespace NiloPharmacy.Data
                         FullName = "Admin User",
                         UserName = "admin-user",
                         Email = adminUserEmail,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        Contact = 9344290177.ToString(),
+                        Gender = Gender.Female,
+                        Age = 22,
+                        DateOfBirth = new DateTime(1995, 11, 07)
                     };
                     await userManager.CreateAsync(newAdminUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
                 }
 
 
-                string appUserEmail = "user@etickets.com";
+                string appUserEmail = "user@xyz.com";
 
                 var appUser = await userManager.FindByEmailAsync(appUserEmail);
                 if (appUser == null)
@@ -115,7 +119,11 @@ namespace NiloPharmacy.Data
                         FullName = "Application User",
                         UserName = "app-user",
                         Email = appUserEmail,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        Contact=8754047956.ToString(),
+                        Gender=Gender.Male,
+                        Age=25,
+                        DateOfBirth=new DateTime(1995,10,27)
                     };
                     await userManager.CreateAsync(newAppUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);

@@ -51,6 +51,7 @@ namespace NiloPharmacy.Data.Services
                 Found.SupplierId = supplier.SupplierId;
                 Found.ExpiryDate = supplier.ExpiryDate;
                 Found.MedicineDesc = supplier.MedicineDesc;
+                Found.Stock = supplier.Stock;
             }
             await _context.SaveChangesAsync();
             return supplier;

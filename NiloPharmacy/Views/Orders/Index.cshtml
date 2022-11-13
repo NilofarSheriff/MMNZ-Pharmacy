@@ -10,7 +10,7 @@
             <h4>List of all your orders</h4>
         </p>
 
-        <table class="table">
+        <table class="table" id="ordertable">
             <thead>
                 <tr>
                     <th>Order ID</th>
@@ -52,5 +52,9 @@
             </tbody>
         </table>
 
+        @Html.ActionLink("Print","PrintAllReport")
+           
+
     </div>
 </div>
+

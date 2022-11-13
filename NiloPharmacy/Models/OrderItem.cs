@@ -11,6 +11,7 @@ namespace NiloPharmacy.Models
         public decimal Amount { get; set; }
         public decimal Price { get; set; }
 
+        
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         public Product product { get; set; }

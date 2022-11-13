@@ -40,6 +40,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label asp-for="Stock" class="control-label"></label>
+                                <input asp-for="Stock" type="number" class="form-control" />
+                                <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
                                 <label asp-for="SupplierId" class="control-label"></label>
                                 <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.Suppliers"></select>
                                 <span asp-validation-for="SupplierId" class="text-danger"></span>

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NiloPharmacy.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace NiloPharmacy.Data.Cart
 {
@@ -78,7 +80,9 @@ namespace NiloPharmacy.Data.Cart
             await _context.SaveChangesAsync();
         }
 
-        public decimal GetShoppingCartTotal() => _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.product.ProductPrice * n.Quantity*n.Amount).Sum();
+        public decimal GetShoppingCartTotal() => _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.product.ProductPrice * n.Amount).Sum();
+
+
     }
 
 }

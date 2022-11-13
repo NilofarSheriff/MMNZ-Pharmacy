@@ -27,6 +27,11 @@ else
                     <i class="bi bi-list"></i> Orders
                 </a>
             </li>
+            <li>
+                <a class="dropdown-item" asp-controller="Account" asp-action="EditUser" asp-route-id="@UserManager.GetUserId(User)">
+                    <i class="bi bi-list"></i> Update Profile
+                </a>
+            </li>
             @if (User.IsInRole("Admin"))
             {
                 <li>

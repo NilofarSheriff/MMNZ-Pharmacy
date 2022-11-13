@@ -33,11 +33,18 @@
                         </p>
                         <p class="card-text"><b>Category: </b>@Model.CategoryName</p>
                         <p class="card-text"><b>Expiry Date: </b>@Model.ExpiryDate.ToString("dd MMM yy")</p>
+                        <p class="card-text"><b>InStock: </b>@Model.Stock</p>
+                        
+
                         <p class="card-text ">
                             <b>Status: </b>
-                            @if (DateTime.Now < Model.ExpiryDate)
+                            @if ((0 < Model.Stock) && (DateTime.Now < Model.ExpiryDate))
                             {
-                                <span class="badge bg-success text-white">AVAILABLE</span>
+                                    <span class="badge bg-success text-white">AVAILABLE</span>
+                            }
+                            else
+                            {
+                                    <span class="badge bg-danger text-white">No Stock</span>
                             }
                             @*else if (DateTime.Now > Model.EndDate)
                             {
@@ -56,7 +63,10 @@
                             <a class="btn btn-outline-primary float-right" asp-action="Index">
                                 Back to List
                             </a>
-                            <a class="btn btn-success text-white" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@Model.ProductId"><i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.ProductPrice.ToString("c"))</a>
+                            <a class="btn btn-success text-white  @((0 < Model.Stock)&&(DateTime.Now<Model.ExpiryDate) ? "" : "disabled")"
+                               asp-controller="Orders"
+                               asp-action="AddItemToShoppingCart" asp-route-id="@Model.ProductId"><i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.ProductPrice.ToString("c"))</a>
+
                         </p>
                     </div>
                 </div>

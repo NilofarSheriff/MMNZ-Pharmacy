@@ -52,6 +52,11 @@
                                 <span asp-validation-for="CategoryName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
+                                <label asp-for="Stock" class="control-label"></label>
+                                <input asp-for="Stock" type="number" class="form-control" />
+                                <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
                                 <label asp-for="MedicinalUse" class="control-label"></label>
                                 <select asp-for="MedicinalUse" class="form-control" asp-items="Html.GetEnumSelectList<MedicinalUse>()"></select>
                                 <span asp-validation-for="MedicinalUse" class="text-danger"></span>
