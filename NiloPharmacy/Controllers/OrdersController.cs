@@ -81,13 +81,35 @@ namespace NiloPharmacy.Controllers
             }
             return RedirectToAction(nameof(ShoppingCart));
         }
-        
-            public ActionResult PrintAllReport()
-            {
-            var report = new ActionAsPdf("Index");
-            return report;
+
+        public async Task<IActionResult> Delete(int Id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+
+            var orders = await _orderservice.GetOrdersByUserIdAndRoleAsync(userId, userRole);
+            //return View(orders);
+            //List<Order> orders = await _orderservice.GetOrders();
+            Order found = orders.FirstOrDefault(X => X.Id == Id)!;
+            return View(found);
         }
-        
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            List<Order> orderlist = await _orderservice.GetOrders();
+            if (orderlist == null)
+            {
+                return View("NotFound");
+            }
+            await _orderservice.DeleteAsync(id);
+
+            return View("OrderCancellation"); ;
+
+
+
+
+        }
 
     }
 }

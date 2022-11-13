@@ -99,10 +99,10 @@ namespace NiloPharmacy.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 
-                //var filteredResult = allProd.Where(n => n.ProductName.Contains(searchString) || n.MedicineDesc.Contains(searchString) || n.MedicinalUse.ToString().Contains(searchString) || n.CategoryName.ToString().Contains(searchString)).ToList();
-                var filteredResultNew = allProd.Where(n => string.Equals(n.ProductName, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.MedicineDesc, searchString,
-                    StringComparison.CurrentCultureIgnoreCase)||(string.Equals(n.CategoryName.ToString(), searchString, StringComparison.CurrentCultureIgnoreCase))).ToList();
-                return View("Index", filteredResultNew);
+                var filteredResult = allProd.Where(n => n.ProductName.Contains(searchString) || n.MedicineDesc.Contains(searchString) || n.MedicinalUse.ToString().Contains(searchString) || n.CategoryName.ToString().Contains(searchString)).ToList();
+                //var filteredResultNew = allProd.Where(n => string.Equals(n.ProductName, searchString, StringComparison.CurrentCultureIgnoreCase) || string.Equals(n.MedicineDesc, searchString,
+                //    StringComparison.CurrentCultureIgnoreCase)||(string.Equals(n.CategoryName.ToString(), searchString, StringComparison.CurrentCultureIgnoreCase))).ToList();
+                return View("Index", filteredResult);
                 
             }
 

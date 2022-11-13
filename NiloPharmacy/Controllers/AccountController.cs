@@ -153,7 +153,47 @@ namespace NiloPharmacy.Controllers
             }
             
         }
-      
+
+        public async Task<IActionResult> ForgotPassword()
+        {
+                
+            return View();
+
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.EmailAddress);
+            if (user == null)
+            {
+                ViewBag.Message = $"User {model.Id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                if((user.Contact == model.Contact)&& (user.DateOfBirth == model.DateOfBirth))
+                {
+                    var result = await _userManager.RemovePasswordAsync(user);
+                    if (result.Succeeded)
+                    {
+                        result = await _userManager.AddPasswordAsync(user, model.Password);
+                        return RedirectToAction("Index", "Products");
+
+                    }
+                    foreach (var errors in result.Errors)
+                    {
+                        ModelState.AddModelError("", errors.Description);
+                    }
+                    
+                }
+                return View(model);
+
+
+            }
+
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()

@@ -1,4 +1,5 @@
 ﻿@model List<Order>
+@inject UserManager<ApplicationUser> UserManager;
 
 @{
     ViewData["Title"] = "All orders";
@@ -9,6 +10,27 @@
         <p>
             <h4>List of all your orders</h4>
         </p>
+        <div>
+
+            <table class="table" id="ordertable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Payment Status</th>
+                        
+                </thead>
+                <tbody>
+                    
+                        <tr>
+                        <td class="align-middle">@UserManager.GetUserName(User)</td>
+                        <td class="align-middle">Cash on Delivery</td>
+                         
+                        </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
 
         <table class="table" id="ordertable">
             <thead>
@@ -20,6 +42,7 @@
                     {
                         <th>User</th>
                     }
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +65,10 @@
                         <td class="align-middle">
                             @order.OrderItems.Select(m => m.product.ProductPrice * m.Amount).Sum().ToString("c")
                         </td>
+                        <td>
+                            <a class="btn btn-danger text-white" asp-action="Delete" asp-route-id="@order.Id"><i class="bi bi-trash"></i>Cancel Order</a>
+                        </td>
+
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <td class="align-middle"> @order.User.FullName </td>
@@ -52,7 +79,10 @@
             </tbody>
         </table>
 
-        @Html.ActionLink("Print","PrintAllReport")
+        <form>
+            <input type="button" class="btn btn-outline-info" value="Print this page" onClick="window.print()">
+        </form>
+       
            
 
     </div>

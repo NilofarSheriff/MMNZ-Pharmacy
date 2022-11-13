@@ -11,6 +11,19 @@ namespace NiloPharmacy.Data.Services
             _context = context;
         }
 
+        public async Task DeleteAsync(int Id)
+        {
+            var result = await _context.Orders.FirstOrDefaultAsync(x => x.Id == Id);
+            _context.Orders.Remove(result);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Order>> GetOrders()
+        {
+            var result = await _context.Orders.ToListAsync();
+            return result;
+        }
+
         public async Task<List<Order>> GetOrdersByUserIdAndRoleAsync(string userId, string userRole)
         {
             var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.product).Include(n => n.User).ToListAsync();
@@ -46,5 +59,7 @@ namespace NiloPharmacy.Data.Services
             }
             await _context.SaveChangesAsync();
         }
+
+        
     }
 }
