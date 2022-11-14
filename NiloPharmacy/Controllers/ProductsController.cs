@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using NiloPharmacy.Data.Services;
 using NiloPharmacy.Models;
 using NiloPharmacy.Data.Static;
+using System.Security.Cryptography;
 
 namespace NiloPharmacy.Controllers
 {
@@ -13,6 +14,7 @@ namespace NiloPharmacy.Controllers
     public class ProductsController : Controller
     {
         
+
         
         private readonly IProductsService _service;
 

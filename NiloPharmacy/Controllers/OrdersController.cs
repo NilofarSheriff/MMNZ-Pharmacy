@@ -32,7 +32,7 @@ namespace NiloPharmacy.Controllers
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
-
+            
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
             List<Order> orderslist = await _orderservice.GetOrders();
@@ -94,10 +94,12 @@ namespace NiloPharmacy.Controllers
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
             var item = await _service.GetByIdAsync(id);
+            
 
             if (item != null)
             {
                 _shoppingCart.AddItemToCart(item);
+               
             }
             return RedirectToAction(nameof(ShoppingCart));
         }

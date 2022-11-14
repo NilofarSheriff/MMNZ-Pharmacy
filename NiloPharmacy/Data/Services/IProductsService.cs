@@ -12,6 +12,8 @@ namespace NiloPharmacy.Data.Services
         Task<Product> UpdateAsync(int Id, Product supplier);
         Task DeleteAsync(int Id);
 
+        
+
         Task<NewProductDropDownsVM> GetNewProductsDropdownsValues();
     }
 }
