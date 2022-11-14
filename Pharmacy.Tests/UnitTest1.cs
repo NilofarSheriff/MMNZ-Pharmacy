@@ -23,7 +23,14 @@ namespace Pharmacy.Tests
             context = new AppDbContext(dboptions.Options);
         }
 
-       
+        [Test]
+       public async Task GetProducts()
+        {
+            var products = new ProductsService(context);
+            var list = await products.GetAllAsync();
+            
+            Assert.Pass();
+        }
 
         [Test]
         public async Task AddProducts()
@@ -47,6 +54,7 @@ namespace Pharmacy.Tests
             await products.AddAsync(prod);
             Assert.Pass();
         }
+
 
         [Test]
         public async Task EditProducts()
@@ -111,6 +119,59 @@ namespace Pharmacy.Tests
             await suppliers.DeleteAsync(1);
             Assert.Pass();
         }
+        [Test]
+        public async Task GetSuppliers()
+        {
+            var suppliers = new SupplierService(context);
+
+            await suppliers.GetAllAsync();
+            Assert.Pass();
+
+        }
+
+        [Test]
+        public async Task GetOrders()
+        {
+            var orders = new OrdersService(context);
+            await orders.GetOrders();
+            Assert.Pass();
+
+        }
+        [Test]
+        public async Task GetOrderbyRole()
+        {
+            var orders = new OrdersService(context);
+            await orders.GetOrdersByUserIdAndRoleAsync("","Admin");
+            Assert.Pass();
+
+        }
+        [Test]
+        public async Task StoreOrder()
+        {
+            var orders = new OrdersService(context);
+            List<ShoppingCartItem> items = new List<ShoppingCartItem>()
+            {
+                new ShoppingCartItem()
+                {
+                    Id = 1,
+                    ShoppingCartId="werr",
+                    Amount=1,
+                    UnitPrice=30,
+                    product =new Product()
+                    {
+                        ProductId=1,
+                        ProductName="dolo",
+                        ProductPrice=30
+                        
+                    }
+
+                    
+                }
+            };
+            await orders.StoreOrderAsync(items, "1234", "mehar@gmail.com");
+            Assert.Pass();
+        }
+
 
 
     }

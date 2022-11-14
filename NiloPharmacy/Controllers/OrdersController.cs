@@ -76,7 +76,14 @@ namespace NiloPharmacy.Controllers
             var items = _shoppingCart.GetShoppingCartItems();
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
+            foreach(var item in items)
+            {
+               var list = await _service.GetAllAsync();
+               Product found = list.FirstOrDefault(X=>X.ProductId==item.product.ProductId)!;
+                found.Stock = (int)(found.Stock - item.Amount);
+                await _service.UpdateAsync(found.ProductId, found);
 
+            }
             await _orderservice.StoreOrderAsync(items, userId, userEmailAddress);
             await _shoppingCart.ClearShoppingCartAsync();
 
@@ -121,6 +128,19 @@ namespace NiloPharmacy.Controllers
             string userRole = User.FindFirstValue(ClaimTypes.Role);
 
             var orders = await _orderservice.GetOrdersByUserIdAndRoleAsync(userId, userRole);
+            foreach(var order in orders)
+            {
+                foreach(var item in order.OrderItems)
+                {
+                    
+                        var list = await _service.GetAllAsync();
+                        Product found1 = list.FirstOrDefault(X => X.ProductId == item.product.ProductId)!;
+                        found1.Stock = (int)(found1.Stock + item.Amount);
+                        await _service.UpdateAsync(found1.ProductId, found1);
+
+                    
+                }
+            }
             //return View(orders);
             //List<Order> orders = await _orderservice.GetOrders();
             Order found = orders.FirstOrDefault(X => X.Id == Id)!;
@@ -136,6 +156,7 @@ namespace NiloPharmacy.Controllers
                 return View("NotFound");
             }
             await _orderservice.DeleteAsync(id);
+            
 
             return View("OrderCancellation"); ;
 
