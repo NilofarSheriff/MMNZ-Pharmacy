@@ -1,4 +1,5 @@
 ﻿
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,68 @@ namespace NiloPharmacy.Controllers
             var users = await _context.Users.ToListAsync();
             return View(users);
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.Message = $"User {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+
+                var userclaims = await _userManager.GetClaimsAsync(user);
+                var userroles = await _userManager.GetRolesAsync(user);
+
+                var model = new EditUserViewModel()
+                {
+                    Id = user.Id,
+                    FullName = user.FullName,
+                    EmailAddress = user.Email,
+                    Contact = user.Contact,
+                    Age = user.Age,
+                    DateOfBirth = user.DateOfBirth,
+                    Gender = user.Gender,
+                    Claims = userclaims.Select(c => c.Value).ToList(),
+                    Roles = userroles
+
+                };
+                return View(model);
+
+            }
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.Message = $"User {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Users");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View("Users");
+                
+
+            }
+        }
+        
+        
         public IActionResult Login() => View(new LoginVM());
 
         [HttpPost]
@@ -154,7 +217,7 @@ namespace NiloPharmacy.Controllers
             
         }
 
-        public async Task<IActionResult> ForgotPassword()
+        public IActionResult ForgotPassword()
         {
                 
             return View();

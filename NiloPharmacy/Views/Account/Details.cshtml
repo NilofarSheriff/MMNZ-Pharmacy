@@ -2,7 +2,7 @@
 @model EditUserViewModel;
 
 @{
-    ViewData["Title"] = "Update User details";
+    ViewData["Title"] = "Details of the User";
 }
 
 <div class="row">
@@ -20,49 +20,50 @@
 
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="EditUser">
+                <form asp-action="Details">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Id" class="control-label"></label>
-                        <input  asp-for="Id" disabled class="form-control" />
+                        <input asp-for="Id" disabled class="form-control" />
                         <span asp-validation-for="Id" class="text-danger"></span>
                     </div>
-
+                    
                     <div class="form-group">
                         <label asp-for="FullName" class="control-label"></label>
-                        <input asp-for="FullName" class="form-control" />
+                        <input asp-for="FullName" disabled class="form-control" />
                         <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="EmailAddress" class="control-label"></label>
-                        <input asp-for="EmailAddress" class="form-control" />
+                        <input asp-for="EmailAddress" disabled class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Contact" class="control-label"></label>
-                        <input asp-for="Contact" class="form-control" />
+                        <input asp-for="Contact" disabled class="form-control" />
                         <span asp-validation-for="Contact" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Age" class="control-label"></label>
-                        <input type="number" asp-for="Age" class="form-control " />
+                        <input type="number" disabled asp-for="Age" class="form-control " />
                         <span asp-validation-for="Age" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="DateOfBirth" class="control-label"></label>
-                        <input type="date" asp-for="DateOfBirth" class="form-control" />
+                        <input type="date" asp-for="DateOfBirth" disabled class="form-control" />
                         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Gender" class="control-label"></label>
-                        <select asp-for="Gender" class="form-control" asp-items="Html.GetEnumSelectList<Gender>()"></select>
+                        <select asp-for="Gender" disabled class="form-control" asp-items="Html.GetEnumSelectList<Gender>()"></select>
                         <span asp-validation-for="Gender" class="text-danger"></span>
                     </div>
                    
 
                     <div class="form-group">
-                        <input class="btn btn-outline-success float-right" type="submit" value="Update" />
-                        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Users">Cancel</a>
+                        
+                       
+                        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Users">Back to List</a>
                     </div>
                 </form>
             </div>
