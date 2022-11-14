@@ -9,6 +9,7 @@ using NiloPharmacy.Data.ViewModels;
 using NiloPharmacy.Models;
 using System.Security.Claims;
 using Rotativa.NetCore;
+using Azure;
 
 namespace NiloPharmacy.Controllers
 {
@@ -27,18 +28,48 @@ namespace NiloPharmacy.Controllers
             _orderservice = ordersService;
         }
 
-        public IActionResult ShoppingCart()
+        public async Task<IActionResult> ShoppingCart()
         {
             var items = _shoppingCart.GetShoppingCartItems();
             _shoppingCart.ShoppingCartItems = items;
 
-            var response = new ShoppingCartVM()
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
+            List<Order> orderslist = await _orderservice.GetOrders();
+            List<Order> Found = orderslist.FindAll(x => x.UserId == userId);
+            if (Found.Count==0)
             {
-                ShoppingCart = _shoppingCart,
-                ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
-            };
+                var response = new ShoppingCartVM()
+                {
+                    ShoppingCart = _shoppingCart,
+                    ShoppingCartTotal = (_shoppingCart.GetShoppingCartTotal()/2)
 
-            return View(response);
+                };
+                ViewBag.Price = response.ShoppingCartTotal;
+                return View(response);
+            }
+            else if (Found.Count>3)
+            {
+                var response = new ShoppingCartVM()
+                {
+                    ShoppingCart = _shoppingCart,
+                    ShoppingCartTotal = (_shoppingCart.GetShoppingCartTotal()-20)
+                };
+                ViewBag.Price = response.ShoppingCartTotal;
+                return View(response);
+
+            }
+            else
+            {
+                var response = new ShoppingCartVM()
+                {
+                    ShoppingCart = _shoppingCart,
+                    ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
+                };
+                ViewBag.Price = response.ShoppingCartTotal;
+                return View(response);
+            }
+           
         }
         public async Task<IActionResult> CompleteOrder()
         {

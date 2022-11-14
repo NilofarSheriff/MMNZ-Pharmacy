@@ -11,12 +11,14 @@ namespace NiloPharmacy.Data.ViewModels
 
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "Email address is required")]
+        [RegularExpression("^[a-z0-9_\\+-]+(\\.[a-z0-9_\\+-]+)*@[a-z0-9-]+(\\.[a-z0-9]+)*\\.([a-z]{2,4})$", ErrorMessage = "Invalid email format.")]
         [EmailAddress]
         public string EmailAddress { get; set; }
        
         
         [Required(ErrorMessage = "Please enter phone number")]
         [Display(Name = "Phone Number")]
+        [RegularExpression(@"\d{10}", ErrorMessage = "Please enter 10 digit Mobile No.")]
         [Phone]
         public string Contact { get; set; }
         [Required(ErrorMessage = "Age is Required")]
@@ -32,6 +34,8 @@ namespace NiloPharmacy.Data.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [RegularExpression("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])|(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])).{6,}$", ErrorMessage = "Passwords must be at least 6 characters and contain at 3 of 4 of the following: upper case (A-Z), lower case (a-z), number (0-9) and special character (e.g. !@#$%^&*)")]
+
         public string Password { get; set; }
 
         [Display(Name = "Confirm password")]
